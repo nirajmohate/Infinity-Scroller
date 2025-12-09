@@ -1,16 +1,44 @@
-# React + Vite
+# TG Infinite Image Blog – React + Tailwind CSS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple image blog application built with **React (Vite)** and **Tailwind CSS**, featuring:
 
-Currently, two official plugins are available:
+-  Image Upload  
+-  Masonry-style Image Grid  
+-  Real-Time Random Notifications  
+-  Auto Scroll to Newly Added Posts  
+-  LocalStorage Data Persistence
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+##  Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### ✔ Image Upload  
+Upload multiple images at once. They appear instantly with preview thumbnails.
 
-## Expanding the ESLint configuration
+### ✔ Auto Scroll to New Posts  
+Whenever new images are added, the page automatically scrolls to show the latest posts.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### ✔ Notification System  
+A simulated notification system adds random "new image added" messages every few seconds.
+
+### ✔ Masonry Image Grid  
+Images are arranged in a responsive masonry grid layout.
+
+### ✔ LocalStorage Support  
+Your posts stay saved even after refreshing the browser.
+
+---
+
+## Installation and setup
+Clone the repo: git clone https://github.com/YOUR-USERNAME/YOUR-REPO.git
+
+Open the project folder: cd YOUR-REPO
+
+Install dependencies: npm install
+
+Start the development server: npm run dev
+
+Open the app in your browser: http://localhost:5173
+
+Build for production (optional): npm run build
+
