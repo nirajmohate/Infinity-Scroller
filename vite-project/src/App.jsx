@@ -11,25 +11,31 @@ export default function App() {
   const [posts, setPosts] = useState([]);
   const [selected, setSelected] = useState([]);
   const [previews, setPreviews] = useState([]);
-  const [visible, setVisible] = useState(6);
 
   const [notifications, setNotifications] = useState([]);
   const [unread, setUnread] = useState(0);
 
-  const loader = useRef(null);
+  const bottomRef = useRef(null); //  NEW for auto scroll
 
-  // Load from storage
+  // Load saved posts
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) setPosts(JSON.parse(saved));
   }, []);
 
-  // Save to storage
+  // Save posts when changed
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
   }, [posts]);
 
-  // Preview Images
+  // Auto-scroll when posts update
+  useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [posts]);
+
+  // Preview images before publishing
   useEffect(() => {
     if (!selected.length) return setPreviews([]);
 
@@ -45,23 +51,7 @@ export default function App() {
     ).then((images) => setPreviews(images));
   }, [selected]);
 
-  // Infinite Scroll
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setVisible((v) => Math.min(posts.length, v + 6));
-        }
-      },
-      { rootMargin: "200px" }
-    );
-
-    if (loader.current) observer.observe(loader.current);
-
-    return () => observer.disconnect();
-  }, [posts]);
-
-  // Notifications Simulation
+  // Random notifications
   useEffect(() => {
     const interval = setInterval(() => {
       if (Math.random() > 0.6) {
@@ -74,22 +64,25 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
+  // Handle file input
   const handleFileChange = (e) => {
     setSelected([...e.target.files]);
   };
 
+  // Publish new posts
   const publish = () => {
+    if (previews.length === 0) return;
+
     const newPosts = previews.map((img, i) => ({
       id: uid(),
       title: `Post ${posts.length + i + 1}`,
       image: img,
-      createdAt: Date.now()
+      createdAt: Date.now(),
     }));
 
     setPosts((p) => [...newPosts, ...p]);
     setSelected([]);
     setPreviews([]);
-    setVisible((v) => v + newPosts.length);
   };
 
   const clearAll = () => {
@@ -107,8 +100,12 @@ export default function App() {
 
         {/* FEED */}
         <div>
-          <MasonryGrid posts={posts.slice(0, visible)} />
-          <div ref={loader} className="h-10"></div>
+          <div className="mb-20">
+            <MasonryGrid posts={posts} />
+          </div>
+
+          {/* AUTO-SCROLL  */}
+          <div ref={bottomRef}></div>
         </div>
 
         {/* SIDEBAR */}
